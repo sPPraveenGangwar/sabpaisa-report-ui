@@ -1,0 +1,81 @@
+name: Deploy Frontend to AWS EC2
+
+on:
+  push:
+    branches:
+      - development
+      - staging
+      - production
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to deploy to'
+        required: true
+        default: 'development'
+        type: choice
+        options:
+          - development
+          - staging
+          - production
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set environment variables
+        id: set-env
+        run: |
+          BRANCH_NAME="${GITHUB_REF#refs/heads/}"
+
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            ENV="${{ github.event.inputs.environment }}"
+          else
+            case "$BRANCH_NAME" in
+              development)
+                ENV="dev"
+                ;;
+              staging)
+                ENV="stage"
+                ;;
+              production)
+                ENV="prod"
+                ;;
+              *)
+                ENV="dev"
+                ;;
+            esac
+          fi
+
+          echo "environment=$ENV" >> $GITHUB_OUTPUT
+          echo "branch=$BRANCH_NAME" >> $GITHUB_OUTPUT
+
+      - name: Deploy UI to EC2
+        uses: appleboy/ssh-action@v0.1.10
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            # Navigate to project directory
+            cd ~/projects/sabpaisa-report-ui
+
+            # Pull latest changes
+            git fetch origin
+            git checkout ${{ steps.set-env.outputs.branch }}
+            git pull origin ${{ steps.set-env.outputs.branch }}
+
+            # Switch to appropriate environment
+            if [ -f "switch-env.sh" ]; then
+              chmod +x switch-env.sh
+              ./switch-env.sh ${{ steps.set-env.outputs.environment }}
+            fi
+
+            # Run deployment script
+            chmod +x deploy-ui.sh
+            ./deploy-ui.sh
+
+            echo "Deployed to ${{ steps.set-env.outputs.environment }} environment"
