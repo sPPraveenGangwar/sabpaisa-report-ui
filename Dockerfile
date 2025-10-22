@@ -13,9 +13,17 @@ RUN npm install --legacy-peer-deps
 # Copy source code
 COPY . .
 
-# Build argument for API URL
+# Build arguments for environment variables
 ARG REACT_APP_API_URL
+ARG REACT_APP_ENVIRONMENT
+ARG REACT_APP_ENABLE_ANALYTICS
+ARG REACT_APP_ENABLE_EXPORTS
+
+# Set environment variables for build
 ENV REACT_APP_API_URL=$REACT_APP_API_URL
+ENV REACT_APP_ENVIRONMENT=$REACT_APP_ENVIRONMENT
+ENV REACT_APP_ENABLE_ANALYTICS=$REACT_APP_ENABLE_ANALYTICS
+ENV REACT_APP_ENABLE_EXPORTS=$REACT_APP_ENABLE_EXPORTS
 
 # Build the application
 RUN npm run build

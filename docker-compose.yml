@@ -7,6 +7,9 @@ services:
       dockerfile: Dockerfile
       args:
         REACT_APP_API_URL: ${REACT_APP_API_URL}
+        REACT_APP_ENVIRONMENT: ${REACT_APP_ENVIRONMENT}
+        REACT_APP_ENABLE_ANALYTICS: ${REACT_APP_ENABLE_ANALYTICS}
+        REACT_APP_ENABLE_EXPORTS: ${REACT_APP_ENABLE_EXPORTS}
     container_name: sabpaisa_ui
     restart: unless-stopped
     ports:
