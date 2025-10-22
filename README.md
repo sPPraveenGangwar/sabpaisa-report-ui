@@ -2,6 +2,8 @@
 
 React TypeScript frontend application for SabPaisa Payment Gateway Reports System.
 
+**Development Server**: http://13.127.244.103:3000
+
 ## Features
 
 - Real-time dashboard with live metrics
