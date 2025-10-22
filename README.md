@@ -37,7 +37,7 @@ npm install
 cp .env.example .env
 
 # Update .env with your API URL
-REACT_APP_API_URL=http://localhost:8000/api/v1
+REACT_APP_API_URL=http://13.127.244.103:8000/api/v1
 ```
 
 ## Development
