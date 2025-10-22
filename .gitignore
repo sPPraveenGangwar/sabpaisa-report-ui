@@ -13,12 +13,15 @@
 
 # misc
 .DS_Store
+
+# Environment files
 .env
-.env.local
-.env.development
-.env.development.local
-.env.test.local
-.env.production.local
+
+# But allow our custom environment files for different deployments
+!.env.local
+!.env.dev
+!.env.stage
+!.env.prod
 
 npm-debug.log*
 yarn-debug.log*

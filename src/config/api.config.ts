@@ -2,7 +2,7 @@ import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, CancelTokenSou
 
 // API Configuration
 export const API_CONFIG = {
-  BASE_URL: process.env.REACT_APP_API_BASE_URL || 'http://localhost:8000/api/v1',
+  BASE_URL: process.env.REACT_APP_API_URL || 'http://localhost:8000/api/v1',
   TIMEOUT: 180000, // 3 minutes timeout for large datasets with page_size=10000
   RETRY_ATTEMPTS: 3,
   RETRY_DELAY: 1000,
